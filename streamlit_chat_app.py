@@ -25,6 +25,8 @@ body {
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     height: 70vh;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 .message {
     padding: 8px 12px;
@@ -66,7 +68,7 @@ if join and username.strip() != "":
     state["users"][username] = room
     st.session_state["username"] = username
     st.session_state["room"] = room
-    st.experimental_rerun()
+    st.rerun()
 
 # Main Chat Interface
 if "username" in st.session_state and "room" in st.session_state:
@@ -99,10 +101,10 @@ if "username" in st.session_state and "room" in st.session_state:
                     "time": datetime.now().strftime("%H:%M:%S")
                 })
                 st.session_state["msg_input"] = ""
-                st.experimental_rerun()
+                st.rerun()
 
     # Auto-refresh every 2 seconds
     time.sleep(2)
-    st.experimental_rerun()
+    st.rerun()
 else:
     st.info("Please join a chat room from the sidebar to start messaging.")
