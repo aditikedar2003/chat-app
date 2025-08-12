@@ -4,6 +4,14 @@ import time
 
 st.set_page_config(page_title="WOW Chat 💬", layout="wide")
 
+# Initialize session_state keys
+if "msg_input" not in st.session_state:
+    st.session_state.msg_input = ""
+if "username" not in st.session_state:
+    st.session_state.username = None
+if "room" not in st.session_state:
+    st.session_state.room = None
+
 # Store chat state in memory (persists only during runtime)
 @st.cache_resource
 def get_state():
@@ -66,14 +74,14 @@ if join and username.strip() != "":
     if room not in state["rooms"]:
         state["rooms"][room] = []
     state["users"][username] = room
-    st.session_state["username"] = username
-    st.session_state["room"] = room
+    st.session_state.username = username
+    st.session_state.room = room
     st.rerun()
 
 # Main Chat Interface
-if "username" in st.session_state and "room" in st.session_state:
-    current_user = st.session_state["username"]
-    current_room = st.session_state["room"]
+if st.session_state.username and st.session_state.room:
+    current_user = st.session_state.username
+    current_room = st.session_state.room
 
     st.markdown(f"<div class='room-title'>Room: {current_room}</div>", unsafe_allow_html=True)
 
@@ -100,7 +108,7 @@ if "username" in st.session_state and "room" in st.session_state:
                     "text": message_text,
                     "time": datetime.now().strftime("%H:%M:%S")
                 })
-                st.session_state["msg_input"] = ""
+                st.session_state.msg_input = ""  # now safe
                 st.rerun()
 
     # Auto-refresh every 2 seconds
